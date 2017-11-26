@@ -4,13 +4,18 @@ Window Lifter with Binary Progression Scheduler and State Machines at Continenta
 
 AEP 2017
 
-Lastest Release: 2017/11/22 
+Lastest Release: 2017/11/25
 
 
-Author: Habib Alejandro Apez González
+Authors: Habib Alejandro Apez González
+
+       	 Estefania López Villagómez
+
 
 
 Contact: habibapez@hotmail.com
+
+         elovillagomez@gmail.com
       
 
 Location: Querétaro, México.
