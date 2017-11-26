@@ -4,16 +4,15 @@
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*/
 /*!
- * $Source: Main.c $
- * $Revision: version 1$
+ * $Source: windowlifter.h $
+ * $Revision: version 3 $
  * $Author: Habib Apez $
- * $Date: 2017-11- 16 $
+ * $Date: 2017-11-08 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \Mainc
-    Main at APP in Scheduler.
-    Binary Progression Scheduler.
+/** \windowlifter.h
+    Header file for windowlifter application. Located at APP.
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -33,69 +32,37 @@
 /*  Author             |        Version     | FILE VERSION (AND INSTANCE)     */
 /*----------------------------------------------------------------------------*/
 /* Habib Apez          |          1         |   Initial version               */
+/* Habib Apez          |          2         |   Naming conventions            */
+/*                     |                    |   and MISRA checked             */
+/* Habib Apez          |          3         |   Function descriptions added   */
+/*                                              and uses delays module        */ 
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*
- * $Log: Main.c  $
+ * $Log: windowlifter.h  $
   ============================================================================*/
+#ifndef __WINDOWLIFTER_H
+#define __WINDOWLIFTER_H
 
 /* Includes */
 /*============================================================================*/
-#include "C:\My Documents\Continental\IAR\Devs\lib\Common\Std_Types.h"
-#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\clock.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\delays.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\button.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\segmentbar.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\leds.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\SERVICES\Interrupts\interrupts.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\SERVICES\Scheduler\SchM.c"
-#include "C:\My Documents\Continental\IAR\Devs\lib\SERVICES\Scheduler\SchM_Cfg.c"
+//#include "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc\NXP\S32K144.h"
 
-/* Constants and types  */
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\MCAL\typedef.h"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\clock.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\delays.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\button.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\segmentbar.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\leds.c"
+
+/* Constants and types */
 /*============================================================================*/
 
-/* Variables */
+/* Exported Variables */
 /*============================================================================*/
 
-/* Private functions prototypes */
-/*============================================================================*/
-void SysTick_Handler(void);
-
-/* Inline functions */
+/* Exported functions prototypes */
 /*============================================================================*/
 
-/* Private functions */
-/*============================================================================*/
-/**************************************************************
- *  Name                 : SystTick interruption
- *  Description          : Moves the Window upwards
- *  Parameters           : [void]
- *  Return               : void
- *  Critical/explanation : No
- **************************************************************/
-void SysTick_Handler(void){
-  if ( NULL!= GlbSysTickCallback)
-	  GlbSysTickCallback();
-  leds_ToggleBlueBoardLED();
-}
-
- void main(void){
-  clock_InitClock();
-  delays_InitTimer();
-  segmentbar_InitBar();
-  leds_InitBoardLeds();
-  leds_InitLeds();
-    
-  SchM_Init(&SchM_Config);			/* Scheduler Services Initialization */
-  SchM_Start();							/* Start Scheduler Services */
-    
-  for(;;){
-    // Do nothing
-  }
-}
-
-/* Exported functions */
-/*============================================================================*/
-
- /* Notice: the file ends with a blank new line to avoid compiler warnings */
+#endif  /* Notice: the file ends with a blank new line to avoid compiler warnings */
