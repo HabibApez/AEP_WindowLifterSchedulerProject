@@ -7,7 +7,7 @@
  * $Source: SchM_Types.h $
  * $Revision: version 1$
  * $Author: Habib Apez $
- * $Date: 2017-11- 16 $
+ * $Date: 2017-11- 22 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
@@ -61,23 +61,23 @@ typedef enum{
 
 /* The mask values to generate the task periods */
 typedef enum{
-  SCHM_MASK_3P125MS =     3,
-  SCHM_MASK_6P25MS  =     7,
-  SCHM_MASK_12P5MS  =     15,
-  SCHM_MASK_25MS    =     31,
-  SCHM_MASK_50MS    =     63,
-  SCHM_MASK_100MS   =     127
+  SCHM_MASK_1MS         =     3,
+  SCHM_MASK_2MS         =     7,
+  SCHM_MASK_4MS         =     15,
+  SCHM_MASK_8MS         =     31,
+  SCHM_MASK_16MS        =     63,
+  SCHM_MASK_32MS        =     127
 }SchM_TaskMaskType;
 
 /* Task ID values */
 typedef enum{
   SCHM_TASKID_BKG,
-  SCHM_TASKID_3P125MS,
-  SCHM_TASKID_6P25MS,
-  SCHM_TASKID_12P5MS,
-  SCHM_TASKID_25MS,
-  SCHM_TASKID_50MS,
-  SCHM_TASKID_100MS
+  SCHM_TASKID_1MS,
+  SCHM_TASKID_2MS,
+  SCHM_TASKID_4MS,
+  SCHM_TASKID_8MS,
+  SCHM_TASKID_16MS,
+  SCHM_TASKID_32MS
 }SchM_TaskIDType;
 
 typedef void (*TaskFunctionPtrType)(void);

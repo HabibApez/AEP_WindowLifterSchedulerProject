@@ -4,15 +4,15 @@
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*/
 /*!
- * $Source: SchM.c $
- * $Revision: version 1$
+ * $Source: buttonsm.c $
+ * $Revision: version 1 $
  * $Author: Habib Apez $
- * $Date: 2017-11- 16 $
+ * $Date: 2017-11-24 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \SchM.c
-    Source of SchM Located at SERVICES in Scheduler.
+/** \button.c
+    button module file for SK32144 uC. Located at MCAL.
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -29,6 +29,7 @@
 /*============================================================================*/
 /*                    REUSE HISTORY - taken over from                         */
 /*============================================================================*/
+/*----------------------------------------------------------------------------*/
 /*  Author             |        Version     | FILE VERSION (AND INSTANCE)     */
 /*----------------------------------------------------------------------------*/
 /* Habib Apez          |          1         |   Initial version               */
@@ -36,147 +37,161 @@
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*
- * $Log: SchM.c  $
+ * $Log: buttonsm.c  $
   ============================================================================*/
 
 /* Includes */
 /*============================================================================*/
-#include "SchM.h"
-// include interrupts
+#include "buttonsm.h"
 
 /* Constants and types  */
 /*============================================================================*/
-const SchM_ConfigType *SchM_ConfigGlobal;
-#define NUM_OF_TASKS (0x6)
+#define ZERO_MS 0
+#define TEN_MS  10
 
+#define BTN_INACTIVE 0
+#define BTN_ACTIVE 1
+        
 /* Variables */
 /*============================================================================*/
-
-SchM_ControlType SchM_Control={0, SCHM_UNINIT};
-
-SchM_TaskControlBlockType SchM_TaskControlBlock[NUM_OF_TASKS];
+E_ButtonStateMachineType rub_ButtonState = BUTTON_IDLE;
+E_ButtonStateType rub_ButtonStatus = NONE_BUTTON_PRESS;
+T_UBYTE lub_ButtonTimeCounter = ZERO_MS;
 
 /* Private functions prototypes */
 /*============================================================================*/
-void SchM_OsTick(void);
-void SchM_Background(void);
-
-tCallbackFunction GlbSysTickCallback; //////////////////////
-void SysTick_Init(tCallbackFunction Callback);
+void buttonsm_IdleState(void);
+void buttonsm_UpValidationState(void);
+void buttonsm_DownValidationState(void);
+void buttonsm_AntipinchValidationState(void);
 
 /* Inline functions */
 /*============================================================================*/
 
 /* Private functions */
 /*============================================================================*/
-/**************************************************************
- *  Name                 : SchM_OsTick
- *  Description          : OS Tick Function
- *  Parameters           : [void]
- *  Return               : void
- *  Critical/explanation : No
- **************************************************************/ 
-void SchM_OsTick(void){
-  T_UBYTE lub_Index;
 
-    for(lub_Index = 0; lub_Index < SchM_ConfigGlobal->SchM_NumOfTasks; lub_Index++){
-      if(((SchM_ConfigGlobal->SchM_TaskDescriptor[lub_Index].SchM_TaskMask) & (SchM_Control.SchM_OsTickCounter)) == SchM_ConfigGlobal->SchM_TaskDescriptor[lub_Index].SchM_TaskOffset){
-        if(SCHM_RUNNING == SchM_Control.SchM_State){
-          SchM_Control.SchM_State = SCHM_OVERLOAD;      // Set Overload Flag 
-          leds_TurnOnDownLED();
-        }
-        SchM_TaskControlBlock[lub_Index].SchM_TaskState = SCHM_TASK_STATE_READY;
-      }		
-      else {
-        // No-Task to be executed
-      }
-    }
-  SchM_Control.SchM_OsTickCounter++;
- }
- 
-/**************************************************************
- *  Name                 : SchM_Background
- *  Description          : Background Task
- *  Parameters           : [void]
- *  Return               : void
- *  Critical/explanation : No
- **************************************************************/
- void SchM_Background(void){
-  T_UBYTE lub_LocTaskIdx;  // Protect this variable due to an interrupt
-  while(1){
-    for(lub_LocTaskIdx = 0; lub_LocTaskIdx < SchM_ConfigGlobal->SchM_NumOfTasks; lub_LocTaskIdx++){
-      if(SCHM_TASK_STATE_READY == SchM_TaskControlBlock[lub_LocTaskIdx].SchM_TaskState){
-	SchM_TaskControlBlock[lub_LocTaskIdx].SchM_TaskState = SCHM_TASK_STATE_RUNNING;
-        SchM_Control.SchM_State = SCHM_RUNNING;
-	//leds_TurnOnUpLED();
-        SchM_ConfigGlobal->SchM_TaskDescriptor[lub_LocTaskIdx].SchM_TaskFunctionPtr();
-	//leds_TurnOffUpLED();
-        SchM_TaskControlBlock[lub_LocTaskIdx].SchM_TaskState = SCHM_TASK_STATE_SUSPENDED;
-	SchM_Control.SchM_State = SCHM_IDLE;
-      }
-      else{ 
-        // Background Task
-      }
-    }
-  }
- } 
- 
 /* Exported functions */
 /*============================================================================*/
+/******************************************************************************/
+/************************    STATE MACHINE   **********************************/
+/******************************************************************************/
 /**************************************************************
- *  Name                 : SchM_Init
- *  Description          : Initializes the scheduler
- *  Parameters           : [const SchM_ConfigType *SchM_Config]
+ *  Name                 : buttonsm_StateMachine
+ *  Description          : State Machine for buttons
+ *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_Init(const SchM_ConfigType *SchM_Config){
-  SchM_ConfigGlobal = SchM_Config;
-  T_UBYTE LocTaskIdx;
-  SchM_Control.SchM_State = SCHM_UNINIT;
+void buttonsm_StateMachine(void){
+  switch(rub_ButtonState){
+    case BUTTON_IDLE:
+      buttonsm_IdleState();
+      break;
 
-  for(LocTaskIdx = 0; LocTaskIdx < SchM_ConfigGlobal->SchM_NumOfTasks; LocTaskIdx++){
-    SchM_TaskControlBlock[LocTaskIdx].SchM_TaskState = SCHM_TASK_STATE_SUSPENDED;
+    case UP_VALIDATION:
+      buttonsm_UpValidationState();
+      break;		
+			
+    case DOWN_VALIDATION:
+      buttonsm_DownValidationState();
+      break;
+  
+    case ANTIPINCH_VALIDATION:
+      buttonsm_AntipinchValidationState();
+      break;		
+			
+    default:
+      break;
+    
+  } 
+}
+
+/******************************************************************************/
+/*******************    STATES DEFINITIONS   **********************************/
+/******************************************************************************/
+
+/**************************************************************
+ *  Name                 : buttonsm_IdleState
+ *  Description          : Defines the Idle state
+ *  Parameters           : [void]
+ *  Return               : void
+ *  Critical/explanation : No
+ **************************************************************/
+void buttonsm_IdleState(void){
+  if(button_CheckButtonAntipinch() == BTN_ACTIVE){		
+    rub_ButtonState = ANTIPINCH_VALIDATION;
+  }		
+  else if((button_CheckButtonUp() == BTN_ACTIVE) && (button_CheckButtonDown() == BTN_INACTIVE) ){		
+    rub_ButtonState = UP_VALIDATION;
+  }	
+  else if((button_CheckButtonDown() == BTN_ACTIVE) && (button_CheckButtonUp() == BTN_INACTIVE)){	
+    rub_ButtonState = DOWN_VALIDATION;
+  }		
+  else{
+    lub_ButtonTimeCounter = ZERO_MS;       /* Reset time*/
+    rub_ButtonStatus = NONE_BUTTON_PRESS;
+  }
+}
+
+/**************************************************************
+ *  Name                 : buttonsm_DownValidationState
+ *  Description          : Defines the DownValidation state
+ *  Parameters           : [void]
+ *  Return               : void
+ *  Critical/explanation : No
+ **************************************************************/
+void buttonsm_DownValidationState(void){
+  
+  lub_ButtonTimeCounter++;                       /*Increases time to 10 milliseconds*/
+    if(lub_ButtonTimeCounter >= TEN_MS){
+      lub_ButtonTimeCounter = ZERO_MS;    /* Reset time*/
+      rub_ButtonStatus = DOWN_BUTTON_PRESS; 
+      rub_ButtonState = BUTTON_IDLE;
     }
-
-  SysTick_Init(SchM_OsTick);            /* Initialize PIT0 for 781.25 micro-seconds timeout & Callback Install */
-  SchM_Control.SchM_State = SCHM_INIT;
+    else{
+      //Do nothing
+    }
 }
 
 /**************************************************************
- *  Name                 : SysTick_Init
- *  Description          : Initializes the SysTick
- *  Parameters           : [tCallbackFunction Callback]
- *  Return               : void
- *  Critical/explanation : No
- **************************************************************/
-void SysTick_Init(tCallbackFunction Callback){
-  interrupts_InitIRQ(SysTick_IRQn, 0xA);
-  interrupts_ConfigSysTickIRQ(20000);   // Configure SysTick Clock
-  GlbSysTickCallback = Callback;        // 0.0125 us each = 250us
-}
-
-/**************************************************************
- *  Name                 : SchM_Init
- *  Description          : Starts the scheduler
+ *  Name                 : buttonsm_UpValidationState
+ *  Description          : Defines the UpValidation state
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_Start(void){
-  interrupts_EnableSysTickIRQ();
-  SchM_Background();
+void buttonsm_UpValidationState(void){
+   lub_ButtonTimeCounter++;	             /*Increases time to 10 milliseconds*/
+    if(lub_ButtonTimeCounter >= TEN_MS){
+      lub_ButtonTimeCounter = ZERO_MS;    /* Reset time*/
+      rub_ButtonStatus = UP_BUTTON_PRESS;
+      rub_ButtonState = BUTTON_IDLE;
+    }
+    else{
+      //Do nothing
+    }
 }
 
+
 /**************************************************************
- *  Name                 : SchM_Stop
- *  Description          : Stops the scheduler
+ *  Name                 : buttonsm_AntipinchValidationState
+ *  Description          : Defines the AntipinchValidation state
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_Stop(void){
-  interrupts_DisableSysTickIRQ();
+void buttonsm_AntipinchValidationState(void){
+  lub_ButtonTimeCounter++;	             /*Increases time to 10 milliseconds*/
+    if(lub_ButtonTimeCounter >= TEN_MS){
+      lub_ButtonTimeCounter = ZERO_MS;    /* Reset time*/
+      rub_ButtonStatus = ANTIPINCH_BUTTON_PRESS;
+      rub_ButtonState = BUTTON_IDLE;
+    }	
+    else{
+      //Do nothing
+    }
 }
+
 
  /* Notice: the file ends with a blank new line to avoid compiler warnings */

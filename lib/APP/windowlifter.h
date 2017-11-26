@@ -5,9 +5,9 @@
 /*============================================================================*/
 /*!
  * $Source: windowlifter.h $
- * $Revision: version 3 $
+ * $Revision: version 4 $
  * $Author: Habib Apez $
- * $Date: 2017-11-08 $
+ * $Date: 2017-11-23 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
@@ -35,7 +35,9 @@
 /* Habib Apez          |          2         |   Naming conventions            */
 /*                     |                    |   and MISRA checked             */
 /* Habib Apez          |          3         |   Function descriptions added   */
-/*                                              and uses delays module        */ 
+/*                     |                    |     and uses delays module      */ 
+/* Habib Apez          |          5         |   Design for its use with       */
+/*                     |                    |     scheduler and state machine */ 
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
@@ -47,22 +49,25 @@
 
 /* Includes */
 /*============================================================================*/
-//#include "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc\NXP\S32K144.h"
-
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\MCAL\typedef.h"
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\clock.c"
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\delays.c"
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\button.c"
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\segmentbar.c"
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\leds.c"
 
 /* Constants and types */
 /*============================================================================*/
+typedef enum{
+  WINDOW_IDLE,
+  ONE_TOUCH_UP,
+  UP_NORMAL,
+  ONE_TOUCH_DOWN,
+  DOWN_NORMAL,
+  ANTIPINCH,
+  BLOCK
+}E_WindowStateMachineType;
 
 /* Exported Variables */
 /*============================================================================*/
 
+
 /* Exported functions prototypes */
 /*============================================================================*/
+void windowlifter_StateMachine(void);
 
 #endif  /* Notice: the file ends with a blank new line to avoid compiler warnings */

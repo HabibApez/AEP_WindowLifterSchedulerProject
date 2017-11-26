@@ -4,16 +4,16 @@
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*/
 /*!
- * $Source: SchM_Tasks.h $
- * $Revision: version 1$
+ * $Source: windowshifter.h $
+ * $Revision: version 1 $
  * $Author: Habib Apez $
- * $Date: 2017-11-2 $
+ * $Date: 2017-11-09 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \SchM_Cfg.h
-    Header of SchM_Tasks. Located at SERVICES in Scheduler.
- */
+/** \windowshifter.h
+    Header file for windowshifter application. Located at APP.
+*/
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
 /* AUTOMOTIVE GROUP, Interior Division, Body and Security                     */
@@ -36,13 +36,22 @@
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*
- * $Log: SchM_Tasks.h  $
+ * $Log: windowshifter.h  $
   ============================================================================*/
-#ifndef __SCHM_TASKS_H
-#define __SCHM_TASKS_H
+#ifndef __WINDOWSHIFTER_H
+#define __WINDOWSHIFTER_H
 
 /* Includes */
 /*============================================================================*/
+#include "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc\NXP\S32K144.h"
+
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\MCAL\typedef.h"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\clock.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\delays.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\button.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\segmentbar.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\leds.c"
+#include "D:\RepoGitSVN\AEP_WindowLifterProject\HAL\interrupts.c"
 
 /* Constants and types */
 /*============================================================================*/
@@ -52,11 +61,5 @@
 
 /* Exported functions prototypes */
 /*============================================================================*/
-extern void SchM_1ms_Task(void);
-extern void SchM_2ms_Task(void);
-extern void SchM_4ms_Task(void);
-extern void SchM_8ms_Task(void);
-extern void SchM_16ms_Task(void);
-extern void SchM_32ms_Task(void);
 
 #endif  /* Notice: the file ends with a blank new line to avoid compiler warnings */

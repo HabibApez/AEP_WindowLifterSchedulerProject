@@ -47,7 +47,7 @@
 
 /* Includes */
 /*============================================================================*/
-#include "D:\RepoGitSVN\AEP_WindowLifterProject\MCAL\scg.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\MCAL\scg.c"
 
 /* Constants and types */
 /*============================================================================*/

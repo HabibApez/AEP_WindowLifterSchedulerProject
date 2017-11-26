@@ -7,7 +7,7 @@
  * $Source: SchM_Tasks.c $
  * $Revision: version 1$
  * $Author: Habib Apez $
- * $Date: 2017-11- 16 $
+ * $Date: 2017-11- 22 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
@@ -42,6 +42,8 @@
 /* Includes */
 /*============================================================================*/
 #include "SchM_Tasks.h"
+#include "C:\My Documents\Continental\IAR\Devs\lib\APP\buttonsm.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\APP\windowlifter.c"
 
 /* Constants and types  */
 /*============================================================================*/
@@ -61,92 +63,70 @@
 /* Exported functions */
 /*============================================================================*/
 /**************************************************************
- *  Name                 : SchM_3p125ms_Task
- *  Description          : Executes a task each 3.125ms
+ *  Name                 : SchM_1ms_Task
+ *  Description          : Executes a task each 1ms
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_3p125ms_Task(void){   /* Code Task0*/
-  segmentbar_TurnOnSeg0();
-  delays_Wait500us();
-  //delays_Wait500us();         /* Comment this line to observe the CPU load change */
-  segmentbar_TurnOffSeg0();
+void SchM_1ms_Task(void){   /* Code Task0*/
+  buttonsm_StateMachine();
+  // leds_ToggleBlueBoardLED();
 }
 
 /**************************************************************
- *  Name                 : SchM_6p25ms_Task
- *  Description          : Executes a task each 6.25ms
+ *  Name                 : SchM_2ms_Task
+ *  Description          : Executes a task each 2ms
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_6p25ms_Task(void){  /* Code Task1*/
-  segmentbar_TurnOnSeg1();
-  delays_Wait500us();
-  // delays_Wait500us();
-  segmentbar_TurnOffSeg1();
+void SchM_2ms_Task(void){  /* Code Task1*/
+  windowlifter_StateMachine();
+  // leds_ToggleBlueBoardLED();
 }
 
 /**************************************************************
- *  Name                 : SchM_12p5ms_Task
- *  Description          : Executes a task each 12.5ms
+ *  Name                 : SchM_4ms_Task
+ *  Description          : Executes a task each 4ms
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_12p5ms_Task(void){  /* Code Task2*/
-  segmentbar_TurnOnSeg2();
-  delays_Wait500us();           /* Comment this line to observe the CPU load change */
-  segmentbar_TurnOffSeg2();
+void SchM_4ms_Task(void){  /* Code Task2*/
+  
 }
 
 /**************************************************************
- *  Name                 : SchM_25ms_Task
- *  Description          : Executes a task each 25ms
+ *  Name                 : SchM_8ms_Task
+ *  Description          : Executes a task each 8ms
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_25ms_Task(void){  /* Code Task3*/
-  segmentbar_TurnOnSeg3();
-  delays_Wait500us();
-  segmentbar_TurnOffSeg3();
+void SchM_8ms_Task(void){  /* Code Task3*/
+  
 }
 
 /**************************************************************
- *  Name                 : SchM_50ms_Task
- *  Description          : Executes a task each 50ms
+ *  Name                 : SchM_16ms_Task
+ *  Description          : Executes a task each 16ms
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_50ms_Task(void){  /* Code Task4*/
-  segmentbar_TurnOnSeg4();
-  delays_Wait500us();
-  segmentbar_TurnOffSeg4();
+void SchM_16ms_Task(void){  /* Code Task4*/
+  
 }
 
 /**************************************************************
- *  Name                 : SchM_100ms_Task
- *  Description          : Executes a task each 100ms
+ *  Name                 : SchM_32ms_Task
+ *  Description          : Executes a task each 32ms
  *  Parameters           : [void]
  *  Return               : void
  *  Critical/explanation : No
  **************************************************************/
-void SchM_100ms_Task(void){  /* Code Task5*/
-  segmentbar_TurnOnSeg5();
-  delays_Wait500us();
-  /*
-  delays_Wait500us();
-  delays_Wait500us();
-  delays_Wait500us();
-  delays_Wait500us();
-  delays_Wait500us();
-  delays_Wait500us();
-  delays_Wait500us();
-  delays_Wait500us();
-*/
-  segmentbar_TurnOffSeg5();
+void SchM_32ms_Task(void){  /* Code Task5*/
+  // leds_ToggleBlueBoardLED();
 }
  /* Notice: the file ends with a blank new line to avoid compiler warnings */

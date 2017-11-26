@@ -4,16 +4,16 @@
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*/
 /*!
- * $Source: SchM_Tasks.h $
- * $Revision: version 1$
+ * $Source: buttonsm.h $
+ * $Revision: version 1 $
  * $Author: Habib Apez $
- * $Date: 2017-11-2 $
+ * $Date: 2017-11-24  $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \SchM_Cfg.h
-    Header of SchM_Tasks. Located at SERVICES in Scheduler.
- */
+/** \button
+    Header file for button module. Located at HAL.
+*/
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
 /* AUTOMOTIVE GROUP, Interior Division, Body and Security                     */
@@ -29,6 +29,7 @@
 /*============================================================================*/
 /*                    REUSE HISTORY - taken over from                         */
 /*============================================================================*/
+/*----------------------------------------------------------------------------*/
 /*  Author             |        Version     | FILE VERSION (AND INSTANCE)     */
 /*----------------------------------------------------------------------------*/
 /* Habib Apez          |          1         |   Initial version               */
@@ -36,27 +37,36 @@
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*
- * $Log: SchM_Tasks.h  $
+ * $Log: buttonsm.h  $
   ============================================================================*/
-#ifndef __SCHM_TASKS_H
-#define __SCHM_TASKS_H
+#ifndef __BUTTONSM_H
+#define __BUTTONSM_H
 
 /* Includes */
 /*============================================================================*/
 
 /* Constants and types */
 /*============================================================================*/
+typedef enum{
+  BUTTON_IDLE,
+  UP_VALIDATION,
+  DOWN_VALIDATION,
+  ANTIPINCH_VALIDATION,
+}E_ButtonStateMachineType;
+
+typedef enum{
+  NONE_BUTTON_PRESS,
+  UP_BUTTON_PRESS,
+  DOWN_BUTTON_PRESS,
+  ANTIPINCH_BUTTON_PRESS
+}E_ButtonStateType;
 
 /* Exported Variables */
 /*============================================================================*/
 
 /* Exported functions prototypes */
 /*============================================================================*/
-extern void SchM_1ms_Task(void);
-extern void SchM_2ms_Task(void);
-extern void SchM_4ms_Task(void);
-extern void SchM_8ms_Task(void);
-extern void SchM_16ms_Task(void);
-extern void SchM_32ms_Task(void);
+void buttonsm_StateMachine(void);
+ 
 
 #endif  /* Notice: the file ends with a blank new line to avoid compiler warnings */

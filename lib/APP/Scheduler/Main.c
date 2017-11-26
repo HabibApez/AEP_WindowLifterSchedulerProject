@@ -4,16 +4,17 @@
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*/
 /*!
- * $Source: SchM_Tasks.h $
+ * $Source: Main.c $
  * $Revision: version 1$
  * $Author: Habib Apez $
- * $Date: 2017-11-2 $
+ * $Date: 2017-11- 16 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \SchM_Cfg.h
-    Header of SchM_Tasks. Located at SERVICES in Scheduler.
- */
+/** \Mainc
+    Main at APP in Scheduler.
+    Binary Progression Scheduler.
+*/
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
 /* AUTOMOTIVE GROUP, Interior Division, Body and Security                     */
@@ -36,27 +37,65 @@
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*
- * $Log: SchM_Tasks.h  $
+ * $Log: Main.c  $
   ============================================================================*/
-#ifndef __SCHM_TASKS_H
-#define __SCHM_TASKS_H
 
 /* Includes */
 /*============================================================================*/
+#include "C:\My Documents\Continental\IAR\Devs\lib\Common\Std_Types.h"
+#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\clock.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\delays.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\button.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\segmentbar.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\HAL\leds.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\SERVICES\Interrupts\interrupts.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\SERVICES\Scheduler\SchM.c"
+#include "C:\My Documents\Continental\IAR\Devs\lib\SERVICES\Scheduler\SchM_Cfg.c"
 
-/* Constants and types */
+/* Constants and types  */
 /*============================================================================*/
 
-/* Exported Variables */
+/* Variables */
 /*============================================================================*/
 
-/* Exported functions prototypes */
+/* Private functions prototypes */
 /*============================================================================*/
-extern void SchM_1ms_Task(void);
-extern void SchM_2ms_Task(void);
-extern void SchM_4ms_Task(void);
-extern void SchM_8ms_Task(void);
-extern void SchM_16ms_Task(void);
-extern void SchM_32ms_Task(void);
+void SysTick_Handler(void);
 
-#endif  /* Notice: the file ends with a blank new line to avoid compiler warnings */
+/* Inline functions */
+/*============================================================================*/
+
+/* Private functions */
+/*============================================================================*/
+/**************************************************************
+ *  Name                 : SystTick interruption
+ *  Description          : Moves the Window upwards
+ *  Parameters           : [void]
+ *  Return               : void
+ *  Critical/explanation : No
+ **************************************************************/
+void SysTick_Handler(void){
+  if ( NULL!= GlbSysTickCallback)
+	  GlbSysTickCallback();
+  leds_ToggleBlueBoardLED();
+}
+
+ void main(void){
+  clock_InitClock();
+  delays_InitTimer();
+  segmentbar_InitBar();
+  leds_InitBoardLeds();
+  leds_InitLeds();
+    
+  SchM_Init(&SchM_Config);			/* Scheduler Services Initialization */
+  SchM_Start();							/* Start Scheduler Services */
+    
+  for(;;){
+    // Do nothing
+  }
+}
+
+/* Exported functions */
+/*============================================================================*/
+
+ /* Notice: the file ends with a blank new line to avoid compiler warnings */
