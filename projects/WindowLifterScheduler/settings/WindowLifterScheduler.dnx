@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>1073373604</Checksum>
+        <Checksum>1500455190</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -101,7 +101,7 @@
         <FREQ_OPENSDA>_ "3"</FREQ_OPENSDA>
         <RESET_DELAY>_ "0"</RESET_DELAY>
         <PORT>_ "181"</PORT>
-        <PORT_NAME_STRING>_ "9CD9CE6C"</PORT_NAME_STRING>
+        <PORT_NAME_STRING>_ "9CBFCE76"</PORT_NAME_STRING>
         <interface_selection>_ "7"</interface_selection>
         <TraceLink_MaxBufferSize>_ "1"</TraceLink_MaxBufferSize>
         <SHOWDIALOG>_ "1"</SHOWDIALOG>
@@ -146,6 +146,12 @@
         <Fmt3>{W}1:rub_UpButtonCounter	3	0</Fmt3>
         <Fmt4>{W}1:rub_UpTransitionCounter	3	0</Fmt4>
     </watch_formats>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints>
+        <Count>0</Count>
+    </Breakpoints>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -155,12 +161,6 @@
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
     </TermIOLog>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints>
-        <Count>0</Count>
-    </Breakpoints>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>
