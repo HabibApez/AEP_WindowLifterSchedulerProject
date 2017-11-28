@@ -4,7 +4,7 @@ Window Lifter with Binary Progression Scheduler and State Machines at Continenta
 
 AEP 2017
 
-Lastest Release: 2017/11/25
+Lastest Release: 2017/11/28
 
 
 Authors: Habib Alejandro Apez González
